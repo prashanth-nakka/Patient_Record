@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.db.models import Q
+from django.core.paginator import Paginator
 from .models import Pateint
 from .forms import PatientForm
 # Create your views here.
@@ -15,8 +16,9 @@ def home(request):
         q = request.GET['q']
         data = Pateint.objects.filter(Q(full_name__icontains=q) | Q(
             mobile_no__icontains=q) | Q(email__icontains=q))
-    # else:
-    #     messages.error(request,"No Records Found!")
+    paginatior = Paginator(data,10)
+    page_number = request.GET.get('page', 1)
+    data = paginatior.get_page(page_number)
     context = {'data': data}
     return render(request, 'home.html', context)
 
