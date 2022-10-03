@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib import messages
 from .models import Pateint
 from .forms import PatientForm
@@ -35,3 +35,12 @@ def update_patient(request, id):
             messages.error(request, "Patient Details Not Found!")
     form = PatientForm(instance=patient_id)
     return render(request, 'update-patient.html', {'form': form})
+
+# DELETE PATEINT
+
+
+def delete_patient(request, id):
+    patient_id = Pateint.objects.filter(id=id)
+    if patient_id:
+        patient_id.delete()
+    return redirect('/')
