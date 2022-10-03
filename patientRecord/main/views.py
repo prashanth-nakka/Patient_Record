@@ -1,4 +1,5 @@
 from django.shortcuts import redirect, render
+from django.core.mail import send_mail
 from django.contrib import messages
 from .models import Pateint
 from .forms import PatientForm
@@ -43,4 +44,19 @@ def delete_patient(request, id):
     patient_id = Pateint.objects.filter(id=id)
     if patient_id:
         patient_id.delete()
+    return redirect('/')
+
+# SEND EMAIL
+
+
+def send_email(request, id):
+    patient_id = Pateint.objects.get(id=id)
+    send_mail(
+        'Next Visit Remainder',
+        'Your Next Visit is on: ' + str(patient_id.next_visit_date),
+        'adim@mail.com',
+        [patient_id.email],
+        fail_silently=False,
+    )
+    messages.success(request, f"Email has been sent to {patient_id.email}")
     return redirect('/')
