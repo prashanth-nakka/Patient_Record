@@ -1,13 +1,22 @@
 from django.shortcuts import redirect, render
 from django.core.mail import send_mail
 from django.contrib import messages
+from django.db.models import Q
 from .models import Pateint
 from .forms import PatientForm
 # Create your views here.
 
+# HOME
+
 
 def home(request):
     data = Pateint.objects.all()
+    if "q" in request.GET:
+        q = request.GET['q']
+        data = Pateint.objects.filter(Q(full_name__icontains=q) | Q(
+            mobile_no__icontains=q) | Q(email__icontains=q))
+    # else:
+    #     messages.error(request,"No Records Found!")
     context = {'data': data}
     return render(request, 'home.html', context)
 
