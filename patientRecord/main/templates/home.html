@@ -40,7 +40,7 @@
                         <td>{{ patient.next_visit_date }}</td>
                         <td>
                             <a href="/update-patient/{{patient.id}}" class="btn btn-warning btn-sm">Modify</a>
-                            <a href="" class="btn btn-danger btn-sm">Delete</a>
+                            <a onclick="return confirm('Are you sure to delete the Patients record?')" href="/delete-patient/{{patient.id}}" class="btn btn-danger btn-sm">Delete</a>
                             <a href="" class="btn btn-success btn-sm">Remind</a>
                         </td>
                     </tr>
